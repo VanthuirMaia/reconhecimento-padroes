@@ -95,7 +95,7 @@ Residência em IA Generativa — UPE
 📧 [Contato profissional](mailto:vnm@ecomp.poli.br)
 📧 [Contato profissional](mailto:vanmaiasf@gmail.com)
 
-**Luiz Vitor**
+**Luiz Vitor Povoas**  
 Mestrado em Engenharia da Computação — UPE  
 📧 [Contato profissional](mailto:lvsp@ecomp.poli.br)
 
