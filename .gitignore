@@ -1,0 +1,79 @@
+# ==========================
+# PYTHON & VSCODE PROJECT
+# Reconhecimento de Padrões (PCA + Random Forest)
+# ==========================
+
+# --- Ambientes Virtuais ---
+.venv/
+env/
+venv/
+.env/
+*.env
+
+# --- Compilação e Cache ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dll
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+.notebook_autosave/
+
+# --- Dados brutos e intermediários (opcional) ---
+# (mantém o repositório leve; armazene amostras no Git e o dataset completo em /data/raw localmente)
+data/raw/*
+!data/raw/README.md
+data/processed/*
+!data/processed/README.md
+
+# --- Resultados e Saídas ---
+results/plots/
+results/metrics.json
+
+# --- Logs e temporários ---
+*.log
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+
+# --- Relatórios e Artigos ---
+reports/artigo/*.aux
+reports/artigo/*.log
+reports/artigo/*.out
+reports/artigo/*.toc
+reports/artigo/*.pdf
+reports/artigo/*.synctex.gz
+
+# --- VSCode & IDE ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- Arquivos de Sistema ---
+Thumbs.db
+Desktop.ini
+
+# --- Dependências externas ---
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+sdist/
+develop-eggs/
+.installed.cfg
+MANIFEST
+
+# --- PyInstaller ---
+*.spec
+
+# --- Backup e Outros ---
+*.zip
+*.rar
+*.7z
