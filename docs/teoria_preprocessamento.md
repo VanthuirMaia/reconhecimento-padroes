@@ -86,4 +86,4 @@ Essa etapa assegura que todas as 30 variáveis do dataset **Breast Cancer Wiscon
 
 **Autores:** Vanthuir Maia; Luiz Vitor Póvoas  
 **Projeto:** Reconhecimento de Padrões — PCA + Random Forest  
-**Orientação:** Prof. — PPGEC/UPE
+**Orientação:** Prof. Fausto Lorenzato — PPGEC/UPE

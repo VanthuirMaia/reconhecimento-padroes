@@ -11,29 +11,32 @@ Essa transformação permite representar os dados em um espaço de menor dimens�
 
 ## 2. Fundamento Matemático
 
-Dado um conjunto de dados \( X \) com \( n \) observações e \( p \) variáveis, o PCA segue os seguintes passos:
+1. **Centralização dos dados:**
 
-1. **Centralização dos dados:**  
-   \[
-   X_c = X - \bar{X}
-   \]
-   onde \( \bar{X} \) é o vetor das médias de cada variável.
+$$
+X_c = X - \bar{X}
+$$
 
-2. **Cálculo da matriz de covariância:**  
-   \[
-   \Sigma = \frac{1}{n-1} X_c^T X_c
-   \]
+onde \( \bar{X} \) é o vetor das médias de cada variável.
 
-3. **Decomposição espectral:**  
-   Calculam-se os **autovalores (\( \lambda_i \))** e **autovetores (\( v_i \))** de \( \Sigma \).  
-   Cada autovetor representa uma **direção de máxima variância** no espaço dos dados.
+2. **Cálculo da matriz de covariância:**
 
-4. **Ordenação e projeção:**  
-   Os autovetores são ordenados em ordem decrescente de autovalores e usados para projetar os dados:  
-   \[
-   Z = X_c V_k
-   \]
-   onde \( V_k \) contém os \( k \) autovetores associados aos maiores autovalores.
+$$
+\Sigma = \frac{1}{n-1} X_c^T X_c
+$$
+
+3. **Decomposição espectral:**
+
+Calculam-se os **autovalores** (\( \lambda_i \)) e **autovetores** (\( v_i \)) de \( \Sigma \).  
+Cada autovetor representa uma **direção de máxima variância** no espaço dos dados.
+
+4. **Ordenação e projeção:**
+
+$$
+Z = X_c V_k
+$$
+
+onde \( V_k \) contém os \( k \) autovetores associados aos maiores autovalores.
 
 ---
 
@@ -105,4 +108,4 @@ Esses componentes foram então utilizados como entrada no modelo **Random Forest
 
 **Autores:** Vanthuir Maia; Luiz Vitor Póvoas  
 **Projeto:** Reconhecimento de Padrões — PCA + Random Forest  
-**Orientação:** Prof. — PPGEC/UPE
+**Orientação:** Prof. Fausto Lorenzato — PPGEC/UPE
