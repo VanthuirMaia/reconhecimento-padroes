@@ -11,9 +11,9 @@ Seu objetivo é garantir que todas as variáveis numéricas possuam **escala com
 
 A transformação aplicada pelo `StandardScaler` segue a fórmula:
 
-\[
+$$
 z_i = \frac{x_i - \mu}{\sigma}
-\]
+$$
 
 onde:
 
