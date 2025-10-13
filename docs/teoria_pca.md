@@ -17,7 +17,7 @@ $$
 X_c = X - \bar{X}
 $$
 
-onde \( \bar{X} \) é o vetor das médias de cada variável.
+onde $ \bar{X} $ é o vetor das médias de cada variável.
 
 2. **Cálculo da matriz de covariância:**
 
@@ -27,7 +27,7 @@ $$
 
 3. **Decomposição espectral:**
 
-Calculam-se os **autovalores** (\( \lambda_i \)) e **autovetores** (\( v_i \)) de \( \Sigma \).  
+Calculam-se os **autovalores** ($ \lambda_i $) e **autovetores** ($ v_i $) de $ \Sigma $.  
 Cada autovetor representa uma **direção de máxima variância** no espaço dos dados.
 
 4. **Ordenação e projeção:**
@@ -36,7 +36,7 @@ $$
 Z = X_c V_k
 $$
 
-onde \( V_k \) contém os \( k \) autovetores associados aos maiores autovalores.
+onde $ V_k $ contém os $ k $ autovetores associados aos maiores autovalores.
 
 ---
 

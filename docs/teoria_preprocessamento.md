@@ -17,10 +17,12 @@ $$
 
 onde:
 
-- \( x_i \) é o valor original da variável;
-- \( \mu \) é a média da variável;
-- \( \sigma \) é o desvio padrão da variável;
-- \( z_i \) é o valor padronizado.
+onde:
+
+- $x_i$ é o valor original da variável;
+- $\mu$ é a média da variável;
+- $\sigma$ é o desvio padrão da variável;
+- $z_i$ é o valor padronizado.
 
 O resultado é uma nova variável com **média zero** e **desvio padrão unitário**.
 
