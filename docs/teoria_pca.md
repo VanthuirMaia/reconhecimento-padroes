@@ -9,70 +9,63 @@ Ela transforma variáveis possivelmente correlacionadas em **componentes princip
 
 ## 2. Fundamento Matemático
 
-A seguir, apresentamos a formulação canônica do PCA para uma matriz de dados $X \in \mathbb{R}^{n \times p}$ (com $n$ observações e $p$ variáveis).
+A seguir apresentamos a formulação canônica do PCA para uma matriz de dados $X \in \mathbb{R}^{n \times p}$ (com $n$ observações e $p$ variáveis).  
+**Obs.:** As fórmulas estão em blocos isolados `$$...$$` (com linhas em branco antes e depois) para renderizar corretamente no GitHub/VSCode.
 
-1. **Centralização dos dados**
+### 2.1 Centralização dos dados
 
-   $$
-   X_c = X - \bar{X}
-   $$
+$$
+X_c = X - \bar{X}
+$$
 
-   onde $\bar{X}$ é a matriz (ou vetor) das médias de cada variável replicada por linha.
+onde $\bar{X}$ é o vetor das médias de cada variável (replicado por linha ao subtrair de $X$).
 
-2. **Matriz de covariância**
+### 2.2 Matriz de covariância
 
-   $$
-   \Sigma = \frac{1}{n-1}\, X_c^{\top} X_c
-   $$
+$$
+\Sigma = \frac{1}{n-1}\, X_c^{\mathsf{T}}\, X_c
+$$
 
-3. **Decomposição espectral** (autovalores e autovetores de $\Sigma$)
+### 2.3 Decomposição espectral (autovalores e autovetores de $\Sigma$)
 
-   $$
-   \Sigma\, v_i = \lambda_i\, v_i, \quad i=1,\dots,p
-   $$
+$$
+\Sigma\, v_i = \lambda_i\, v_i \quad \text{para } i = 1, \dots, p
+$$
 
-   Os autovetores $v_i$ são **ortogonais** entre si e cada um aponta para uma **direção de máxima variância**.  
-   Ordenamos $\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_p$ e empilhamos os $k$ primeiros autovetores em
-   $V_k = [\,v_1\ v_2\ \dots\ v_k\,] \in \mathbb{R}^{p \times k}$.
+Os autovetores $v_i$ são **ortogonais** entre si e cada um aponta para uma **direção de máxima variância**.  
+Ordenamos $\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_p$ e empilhamos os $k$ primeiros autovetores em
 
-4. **Projeção no subespaço de dimensão $k$**
+$$
+V_k = [\,v_1\ v_2\ \dots\ v_k\,] \in \mathbb{R}^{p \times k}.
+$$
 
-   $$
-   Z = X_c\, V_k \in \mathbb{R}^{n \times k}
-   $$
+### 2.4 Projeção no subespaço de dimensão $k$
 
-   A matriz $Z$ contém as coordenadas dos dados nos **$k$ componentes principais**.
+$$
+Z = X_c\, V_k \in \mathbb{R}^{n \times k}
+$$
 
----
-
-## 3. Interpretação Geométrica
-
-Geometricamente, o PCA corresponde a **rotacionar** o sistema de eixos para alinhar o primeiro eixo com a **direção de maior variância** dos dados, o segundo com a maior variância remanescente (sujeito à ortogonalidade), e assim por diante.  
-Essa mudança de base **não altera** as relações entre os pontos; apenas os reexpressa em um sistema mais informativo.
+A matriz $Z$ contém as coordenadas dos dados nos **$k$ componentes principais**.
 
 ---
 
-## 4. Variância Explicada e Curva do Cotovelo
+## 3. Variância Explicada
 
-Cada componente principal explica uma fração da variância total dada por $\text{EVR}_i = \lambda_i / \sum_{j=1}^{p} \lambda_j$.  
-A variância **acumulada** até $k$ componentes é $\sum_{i=1}^{k} \text{EVR}_i$.
+Cada componente principal explica uma fração da variância total dada por
 
-No conjunto _Breast Cancer Wisconsin_, observamos empiricamente:
+$$
+\mathrm{EVR}_i = \frac{\lambda_i}{\sum_{j=1}^{p} \lambda_j},
+$$
 
-| Nº de Componentes | Variância Explicada Individual | Variância Acumulada |
-| ----------------: | -----------------------------: | ------------------: |
-|                 1 |                          44,4% |               44,4% |
-|                 2 |                          18,9% |               63,3% |
-|                 3 |                           9,5% |               72,8% |
-|                 4 |                           6,7% |               79,5% |
-|                 5 |                           5,5% |               85,0% |
-|             **7** |                              — |           **≈ 95%** |
+e a variância acumulada até $k$ componentes é
 
-O **ponto de cotovelo** ocorre entre 5 e 7 componentes; manter **$k \approx 7$** preserva ~95% da variância com forte redução de dimensionalidade (30 $\rightarrow$ 7).
+$$
+\sum_{i=1}^{k} \mathrm{EVR}_i.
+$$
 
 ---
 
-## 5. Benefícios no Projeto
+## 4. Benefícios no Projeto
 
 | Benefício                             | Impacto                                                |
 | ------------------------------------- | ------------------------------------------------------ |
@@ -83,18 +76,14 @@ O **ponto de cotovelo** ocorre entre 5 e 7 componentes; manter **$k \approx 7$**
 
 ---
 
-## 6. Relação com o Pipeline (PCA + Random Forest)
+## 5. Relação com o Pipeline (PCA + Random Forest)
 
 No nosso pipeline, o PCA é aplicado **após a padronização** (via `StandardScaler`) e **antes** do classificador.  
-Compararemos o desempenho do **Random Forest** **com** e **sem** PCA para avaliar:
-
-- impacto em acurácia/precision/recall/F1;
-- robustez e tempo de treinamento;
-- sensibilidade a hiperparâmetros.
+Compararemos o desempenho do **Random Forest** **com** e **sem** PCA para avaliar acurácia, precisão, recall, F1, robustez e tempo de treinamento.
 
 ---
 
-## 7. Referências
+## 6. Referências
 
 - JOLLIFFE, I. T. _Principal Component Analysis_. Springer, 2002.
 - JAMES, G. et al. _An Introduction to Statistical Learning_. Springer, 2021.
