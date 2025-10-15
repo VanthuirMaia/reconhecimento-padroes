@@ -4,6 +4,7 @@ from typing import Optional, Dict, Any, Tuple
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
+from sklearn.model_selection import StratifiedKFold
 
 @dataclass
 class RFConfig:
@@ -91,3 +92,51 @@ def evaluate_rf_with_pca(
     metrics["settings"] = "with_pca"
     metrics["pca_n_components"] = X_train_pca.shape[1]
     return metrics  
+
+def cross_validate_rf(X, y, cfg: RFConfig, use_pca=False, n_components=7, n_splits=5):
+    """
+    Executa validação cruzada estratificada do Random Forest.
+    Retorna médias e desvios das métricas.
+    """
+    from .pca_analysis import apply_pca
+    from .data_processing import preprocess_data
+    from sklearn.utils import shuffle
+
+    # Embaralha para evitar padrões de ordenação
+    X, y = shuffle(X, y, random_state=cfg.random_state)
+
+    # Define o validador estratificado (mantém proporção de classes)
+    skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=cfg.random_state)
+
+    # Dicionário para armazenar métricas
+    results = {"accuracy": [], "precision": [], "recall": [], "f1": []}
+
+    for train_idx, test_idx in skf.split(X, y):
+        X_train, X_test = X[train_idx], X[test_idx]
+        y_train, y_test = y[train_idx], y[test_idx]
+
+        # Padroniza
+        X_train_scaled, X_test_scaled = preprocess_data(X_train, X_test)
+
+        # Aplica PCA opcional
+        if use_pca:
+            X_train_scaled, X_test_scaled, _ = apply_pca(
+                X_train_scaled, X_test_scaled, n_components=n_components, plot_variance=False
+            )
+
+        # Treina e avalia
+        model = build_rf(cfg)
+        y_pred = fit_predict(model, X_train_scaled, y_train, X_test_scaled)
+        metrics = compute_metrics(y_test, y_pred)
+
+        # Armazena resultados
+        for key in results.keys():
+            results[key].append(metrics[key])
+
+    # Calcula médias e desvios-padrão
+    summary = {k: (np.mean(v), np.std(v)) for k, v in results.items()}
+    summary["use_pca"] = use_pca
+    summary["n_components"] = n_components if use_pca else None
+    summary["n_splits"] = n_splits
+    summary["raw_results"] = results  # << adiciona isso
+    return summary
