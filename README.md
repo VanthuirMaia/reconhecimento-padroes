@@ -1,17 +1,29 @@
-# 🧬 Projeto de Reconhecimento de Padrões — PCA + Random Forest
+# 🧬 Projeto de Reconhecimento de Padrões — Sistema Híbrido PCA + Autoencoder + Meta-Aprendizagem
 
 Este projeto foi desenvolvido como parte da disciplina **Reconhecimento de Padrões (PPGEC/UPE)**.  
-O objetivo é comparar o desempenho de um classificador **Random Forest** com e sem a aplicação de **PCA (Principal Component Analysis)**, uma técnica clássica de **redução de dimensionalidade**.
+O objetivo é implementar, analisar e comparar **três representações diferentes dos dados** aplicadas a classificadores tradicionais:
+
+- 🔹 **Representação Original**
+- 🔹 **PCA (redução linear de dimensionalidade)**
+- 🔹 **Autoencoder (redução não linear)**
+- 🔹 **Meta-aprendizagem via Grid Search** para otimização dos modelos
+
+Além disso, foram aplicados **testes estatísticos formais** (t-test, Wilcoxon e Friedman) para comprovar a significância dos resultados.
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Objetivo Geral
 
-Construir um sistema de **classificação supervisionada** usando o dataset **Breast Cancer Wisconsin**, avaliando:
+Construir um **sistema híbrido completo de reconhecimento de padrões**, integrando:
 
-- A influência do **PCA** na performance do **Random Forest**;
-- O equilíbrio entre **acurácia** e **simplicidade do modelo**;
-- O impacto da **redução de dimensionalidade (30 → 7 componentes)** sobre as métricas de avaliação.
+- Redução de dimensionalidade (PCA e Autoencoder)
+- Classificadores (Random Forest e SVM)
+- Validação cruzada + Grid Search
+- Testes de hipótese
+- Visualizações científicas
+- Comparação com literatura
+
+Usando o dataset **Breast Cancer Wisconsin (WDBC)**.
 
 ---
 
@@ -21,54 +33,69 @@ Construir um sistema de **classificação supervisionada** usando o dataset **Br
 reconhecimento-padroes/
 │
 ├── data/
-│   ├── raw/                # Dados originais (brutos)
-│   ├── processed/          # Dados padronizados e prontos para modelagem
+│   ├── raw/
+│   ├── processed/
 │
 ├── notebooks/
-│   ├── 01_exploracao.ipynb          # Análise exploratória inicial
-│   ├── 02_preprocessamento.ipynb    # Padronização e PCA
-│   ├── 03_modelo_pca_rf.ipynb       # Treinamento e comparação dos modelos
+│   ├── 01_exploracao.ipynb
+│   ├── 02_preprocessamento.ipynb
+│   ├── 03_modelo_pca_rf.ipynb
+│   ├── 04_sistema_hibrido.ipynb       # Autoencoder + RF/SVM + Grid Search
+│   ├── 05_testes_estatisticos.ipynb   # t-test, Wilcoxon, Friedman
+│   ├── 06_figuras_resultados.ipynb    # Todas as figuras finais
 │
 ├── src/
-│   ├── data_processing.py           # Funções de carregamento e pré-processamento
-│   ├── pca_analysis.py              # Aplicação e visualização do PCA
-│   ├── model_random_forest.py       # Modelagem, avaliação e validação cruzada
+│   ├── data_processing.py
+│   ├── pca_analysis.py
+│   ├── model_random_forest.py
+│   ├── autoencoder.py                 # Arquitetura e treinamento do AE
+│   ├── utils.py
+│
+├── models/
+│   ├── encoder.pkl
+│   ├── ae_history.pkl
+│   ├── acc_results.pkl
 │
 ├── results/
-│   ├── metrics.json                 # Métricas quantitativas
-│   ├── plots/                       # Gráficos (Matriz de Confusão, Boxplots, etc.)
+│   ├── plots/
+│   ├── metrics.json
 │
 ├── reports/
-│   ├── docs_teoricos/               # Explicações matemáticas (PCA e Pré-processamento)
-│   ├── artigo/                      # Versão em LaTeX para submissão
-│   └── resumo_executivo.md          # Resumo técnico do projeto
+│   ├── artigo/
+│   ├── resumo_executivo.md
 │
-├── .gitignore
 ├── requirements.txt
-└── main.py
+└── README.md
 ```
 
 ---
 
 ## ⚙️ Instalação e Execução
 
-### 1️⃣ Criar ambiente virtual e instalar dependências
+### 1️⃣ Criar ambiente virtual
 
 ```bash
 python -m venv .venv
-.venv\Scripts\activate    # Windows
+.venv\Scriptsctivate       # Windows
 # ou source .venv/bin/activate  (Linux/Mac)
+```
 
+### 2️⃣ Instalar dependências
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 2️⃣ Executar notebooks de forma sequencial
+### 3️⃣ Executar notebooks na ordem:
 
-1. **01_exploracao.ipynb** → visualização e entendimento do dataset
-2. **02_preprocessamento.ipynb** → normalização e PCA
-3. **03_modelo_pca_rf.ipynb** → comparação entre os modelos
+1. **01_exploracao.ipynb**
+2. **02_preprocessamento.ipynb**
+3. **03_modelo_pca_rf.ipynb**
+4. **04_sistema_hibrido.ipynb**
+5. **05_testes_estatisticos.ipynb**
+6. **06_figuras_resultados.ipynb**
 
-ou, se preferir rodar o pipeline completo via script:
+Ou executar pipeline automatizado (se configurado):
 
 ```bash
 python main.py
@@ -76,28 +103,64 @@ python main.py
 
 ---
 
-## 📊 Principais Resultados
+## 📊 Resultados Principais
 
-| Métrica      | Sem PCA | Com PCA (k=7) |
-| ------------ | ------- | ------------- |
-| **Acurácia** | 0.947   | 0.921         |
-| **Precisão** | 0.958   | 0.944         |
-| **Recall**   | 0.958   | 0.931         |
-| **F1-Score** | 0.958   | 0.937         |
+### Random Forest
 
-> 🔍 O PCA reduziu a dimensionalidade de 30 para 7 atributos,  
-> mantendo desempenho semelhante — o que demonstra sua eficiência  
-> em cenários de alta dimensionalidade e baixo custo computacional.
+| Métrica  | Original | PCA   | AE    |
+| -------- | -------- | ----- | ----- |
+| Acurácia | 0.947    | 0.921 | 0.921 |
+
+### SVM
+
+| Métrica  | Original | PCA   | AE    |
+| -------- | -------- | ----- | ----- |
+| Acurácia | 0.982    | 0.956 | 0.938 |
+
+📌 **SVM com dados originais apresentou o melhor desempenho geral.**
+
+---
+
+## 🧪 Testes Estatísticos
+
+Foram aplicados:
+
+- **t-test pareado**
+- **Wilcoxon signed-rank**
+- **Friedman**
+
+O teste de Friedman resultou em:
+
+```
+χ² = 78.38
+p < 1e-14
+```
+
+➡️ Indica diferença estatisticamente significativa entre os métodos.
+
+---
+
+## 🎨 Figuras Geradas
+
+- Boxplot comparativo das acurácias
+- Ranking de Friedman
+- Heatmap das diferenças
+- PCA 2D
+- Autoencoder 3D
+- Curva de treinamento do Autoencoder
+- Arquitetura visual do Autoencoder
 
 ---
 
 ## 🧠 Tecnologias Utilizadas
 
-- **Python 3.12**
-- **scikit-learn** — modelagem e métricas
-- **Pandas / NumPy** — manipulação de dados
-- **Matplotlib / Seaborn** — visualização científica
-- **Jupyter Notebook** — experimentação e reprodutibilidade
+- Python 3.10
+- TensorFlow 2.15
+- scikit-learn
+- Pandas / NumPy
+- Matplotlib / Seaborn
+- SciPy (testes estatísticos)
+- Jupyter Notebook
 
 ---
 
@@ -106,16 +169,16 @@ python main.py
 **Vanthuir Maia**  
 Mestrado em Engenharia da Computação — UPE  
 Residência em IA Generativa — UPE  
-📧 [vnm@ecomp.poli.br](mailto:vnm@ecomp.poli.br)  
-📧 [vanmaiasf@gmail.com](mailto:vanmaiasf@gmail.com)
+📧 vnm@ecomp.poli.br  
+📧 vanmaiasf@gmail.com
 
 **Luiz Vitor Póvoas**  
 Mestrado em Engenharia da Computação — UPE  
-📧 [lvsp@ecomp.poli.br](mailto:lvsp@ecomp.poli.br)
+📧 lvsp@ecomp.poli.br
 
 ---
 
 ## 📜 Licença
 
 Este projeto é destinado a **fins acadêmicos e de pesquisa**.  
-Uso comercial não autorizado sem o consentimento dos autores.
+Uso comercial não autorizado sem permissão dos autores.
