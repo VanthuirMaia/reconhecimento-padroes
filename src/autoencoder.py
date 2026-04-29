@@ -1,5 +1,7 @@
-import numpy as np
+# tensorflow deve ser importado antes do sklearn (conflito de DLL no Windows)
+import tensorflow as tf
 from tensorflow.keras import models, layers
+import numpy as np
 
 def create_autoencoder(input_dim=30, bottleneck_dim=3):
     # Entrada
