@@ -127,8 +127,6 @@ ax.grid(axis="y", linestyle="--", alpha=0.45)
 
 # Linha divisória RF × SVM
 ax.axvline(3.5, color="#aaaaaa", linestyle=":", linewidth=1.2)
-ax.text(2.0, 0.997, "RF", ha="center", fontsize=9, color="#555555")
-ax.text(5.0, 0.997, "SVM", ha="center", fontsize=9, color="#555555")
 
 fig.tight_layout()
 fig.savefig(out("Fig1_boxplot.png"), dpi=DPI, bbox_inches="tight")
@@ -218,7 +216,7 @@ for label, color, marker, name in [
 ]:
     mask = y_bc == label
     ax.scatter(Z_pca2d[mask, 0], Z_pca2d[mask, 1],
-               c=color, marker=marker, s=38, alpha=0.72,
+               c=color, marker=marker, s=40, alpha=0.6,
                edgecolors="none", label=name, zorder=3 if label == 0 else 2)
 
 ax.set_xlabel(f"Componente Principal 1 ({var1:.1f}% var.)")
@@ -260,6 +258,29 @@ fig.tight_layout()
 fig.savefig(out("Fig5_ae3d.png"), dpi=DPI, bbox_inches="tight")
 plt.close(fig)
 print("  salva.")
+
+# 4 versões com ângulos diferentes para seleção editorial
+for v, azim in enumerate([30, 45, 60, 135], start=1):
+    fig_v = plt.figure(figsize=(8, 7))
+    fig_v.patch.set_facecolor("white")
+    ax_v = fig_v.add_subplot(111, projection="3d")
+    ax_v.set_facecolor("white")
+    for label, color, marker, name in [
+        (1, C_MAL, "^", "Maligno"),
+        (0, C_BEN, "o", "Benigno"),
+    ]:
+        mask = y_bc == label
+        ax_v.scatter(Z_ae[mask, 0], Z_ae[mask, 1], Z_ae[mask, 2],
+                     c=color, marker=marker, s=28, alpha=0.75, label=name)
+    ax_v.set_xlabel("Dim. Latente 1", labelpad=8, fontsize=10)
+    ax_v.set_ylabel("Dim. Latente 2", labelpad=8, fontsize=10)
+    ax_v.set_zlabel("Dim. Latente 3", labelpad=8, fontsize=10)
+    ax_v.legend(loc="upper left", framealpha=0.9, fontsize=9)
+    ax_v.view_init(elev=20, azim=azim)
+    fig_v.tight_layout()
+    fig_v.savefig(out(f"Fig5_ae3d_v{v}.png"), dpi=DPI, bbox_inches="tight")
+    plt.close(fig_v)
+    print(f"  Fig5_ae3d_v{v}.png  (azim={azim}) salva.")
 
 # ===========================================================================
 # Fig 6 — Curva de treinamento do Autoencoder
