@@ -4,8 +4,8 @@ import numpy as np
 
 # Aplica PCA aos dados e retorna as versões transformadas.Também pode gerar um gráfico da variância explicada.
 
-def apply_pca(X_train, X_test, n_components=None, plot_variance=True):
-    pca = PCA(n_components=n_components)
+def apply_pca(X_train, X_test, n_components=None, plot_variance=True, random_state=42):
+    pca = PCA(n_components=n_components, random_state=random_state)
     X_train_pca = pca.fit_transform(X_train)
     X_test_pca = pca.transform(X_test)
 

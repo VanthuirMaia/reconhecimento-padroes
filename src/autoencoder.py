@@ -3,7 +3,9 @@ import tensorflow as tf
 from tensorflow.keras import models, layers
 import numpy as np
 
-def create_autoencoder(input_dim=30, bottleneck_dim=3):
+def create_autoencoder(input_dim=30, bottleneck_dim=3, seed=42):
+    tf.random.set_seed(seed)
+    np.random.seed(seed)
     # Entrada
     input_layer = layers.Input(shape=(input_dim,))
 
